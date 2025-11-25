@@ -11,8 +11,7 @@ import {
   Mail,
   CheckSquare,
   MessageSquare,
-  FileText,
-  Layers
+  FileText
 } from "lucide-react";
 
 const WorkflowCanvas = () => {
@@ -63,15 +62,12 @@ const WorkflowCanvas = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-canvas">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-full">
+      {/* Header Bar */}
+      <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-primary to-electric-glow rounded-xl">
-                <Layers className="h-6 w-6 text-white" />
-              </div>
               <div>
                 <h1 className="text-xl font-bold">Gmail → Jira → Slack Pipeline</h1>
                 <div className="flex items-center gap-2 mt-1">
@@ -99,7 +95,7 @@ const WorkflowCanvas = () => {
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Canvas */}
       <main className="container mx-auto px-6 py-8">
