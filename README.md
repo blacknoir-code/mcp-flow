@@ -396,7 +396,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 - **Issues** - [GitHub Issues](https://github.com/blacknoir-code/mcp-flow/issues)
 - **Discussions** - [GitHub Discussions](https://github.com/blacknoir-code/mcp-flow/discussions)
