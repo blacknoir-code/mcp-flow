@@ -3,33 +3,11 @@ import { TemplateCard } from "@/components/TemplateCard";
 import { WorkflowCard } from "@/components/WorkflowCard";
 import { IntegrationCard } from "@/components/IntegrationCard";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Play, Settings, Layers } from "lucide-react";
+import { Sparkles, Play } from "lucide-react";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-canvas">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-primary to-electric-glow rounded-xl">
-                <Layers className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold">MCP Browser</h1>
-                <p className="text-xs text-muted-foreground">Workflow Automation Engine</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-full">
       {/* Main Content */}
       <main className="container mx-auto px-6 py-12">
         {/* Hero Section */}
