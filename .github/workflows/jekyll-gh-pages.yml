@@ -36,8 +36,6 @@ jobs:
 
       - name: Build application
         run: npm run build
-        env:
-          VITE_BASE_URL: /mcp-flow/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
