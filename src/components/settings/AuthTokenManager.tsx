@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSettingsStore } from "@/stores/settingsStore";
 import { ConfirmModal } from "./ConfirmModal";
 import { useToastSystem } from "./ToastSystem";
@@ -24,7 +24,6 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import dayjs from "dayjs";
-import { v4 as uuidv4 } from "uuid";
 
 const allScopes = [
   "workflow:read",
@@ -38,8 +37,12 @@ const allScopes = [
 ];
 
 export const AuthTokenManager = () => {
-  const store = useSettingsStore();
-  const { tokens = [], addToken, updateToken, deleteToken, rotateToken } = store;
+  const tokens = useSettingsStore((state) => state.tokens || []);
+  const addToken = useSettingsStore((state) => state.addToken);
+  const updateToken = useSettingsStore((state) => state.updateToken);
+  const deleteToken = useSettingsStore((state) => state.deleteToken);
+  const rotateToken = useSettingsStore((state) => state.rotateToken);
+  
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showRevokeModal, setShowRevokeModal] = useState<string | null>(null);
   const [visibleTokens, setVisibleTokens] = useState<Set<string>>(new Set());
@@ -56,70 +59,106 @@ export const AuthTokenManager = () => {
       return;
     }
 
-    const expiresAt =
-      newToken.expiresIn === "never"
-        ? null
-        : dayjs().add(parseInt(newToken.expiresIn), "days").toISOString();
+    if (!addToken) {
+      toast.showError("Unable to create token");
+      return;
+    }
 
-    const tokenId = addToken({
-      name: newToken.name,
-      scopes: newToken.scopes,
-      expiresAt,
-    });
+    try {
+      const expiresAt =
+        newToken.expiresIn === "never"
+          ? null
+          : dayjs().add(parseInt(newToken.expiresIn), "days").toISOString();
 
-    appendAuditLog({
-      user: "current_user",
-      userEmail: "user@example.com",
-      eventType: "token",
-      action: "create_token",
-      resource: "token",
-      resourceId: tokenId,
-      metadata: { tokenName: newToken.name, scopes: newToken.scopes },
-    });
+      const tokenId = addToken({
+        name: newToken.name,
+        scopes: newToken.scopes,
+        expiresAt,
+      });
 
-    toast.showSuccess("Token created successfully");
-    setShowCreateModal(false);
-    setNewToken({ name: "", scopes: [], expiresIn: "90" });
-  };
-
-  const handleRotate = (tokenId: string) => {
-    rotateToken(tokenId);
-    appendAuditLog({
-      user: "current_user",
-      userEmail: "user@example.com",
-      eventType: "token",
-      action: "rotate_token",
-      resource: "token",
-      resourceId: tokenId,
-      metadata: {},
-    });
-    toast.showSuccess("Token rotated successfully");
-  };
-
-  const handleRevoke = (tokenId: string) => {
-    const token = tokens.find((t) => t.id === tokenId);
-    if (token) {
-      deleteToken(tokenId);
       appendAuditLog({
         user: "current_user",
         userEmail: "user@example.com",
         eventType: "token",
-        action: "revoke_token",
+        action: "create_token",
         resource: "token",
         resourceId: tokenId,
-        metadata: { tokenName: token.name },
+        metadata: { tokenName: newToken.name, scopes: newToken.scopes },
       });
-      toast.showSuccess("Token revoked successfully");
+
+      toast.showSuccess("Token created successfully");
+      setShowCreateModal(false);
+      setNewToken({ name: "", scopes: [], expiresIn: "90" });
+    } catch (error) {
+      console.error("Error creating token:", error);
+      toast.showError("Failed to create token");
+    }
+  };
+
+  const handleRotate = (tokenId: string) => {
+    if (!rotateToken) return;
+    try {
+      rotateToken(tokenId);
+      appendAuditLog({
+        user: "current_user",
+        userEmail: "user@example.com",
+        eventType: "token",
+        action: "rotate_token",
+        resource: "token",
+        resourceId: tokenId,
+        metadata: {},
+      });
+      toast.showSuccess("Token rotated successfully");
+    } catch (error) {
+      console.error("Error rotating token:", error);
+      toast.showError("Failed to rotate token");
+    }
+  };
+
+  const handleRevoke = (tokenId: string) => {
+    if (!deleteToken) return;
+    try {
+      const token = tokens.find((t) => t.id === tokenId);
+      if (token) {
+        deleteToken(tokenId);
+        appendAuditLog({
+          user: "current_user",
+          userEmail: "user@example.com",
+          eventType: "token",
+          action: "revoke_token",
+          resource: "token",
+          resourceId: tokenId,
+          metadata: { tokenName: token.name },
+        });
+        toast.showSuccess("Token revoked successfully");
+      }
+    } catch (error) {
+      console.error("Error revoking token:", error);
+      toast.showError("Failed to revoke token");
     }
     setShowRevokeModal(null);
   };
 
   const copyToken = (token: string) => {
-    navigator.clipboard.writeText(token);
-    toast.showSuccess("Token copied to clipboard");
+    try {
+      navigator.clipboard.writeText(token);
+      toast.showSuccess("Token copied to clipboard");
+    } catch (error) {
+      console.error("Error copying token:", error);
+      toast.showError("Failed to copy token");
+    }
   };
 
   const hasAdminScope = (scopes: string[]) => scopes.includes("admin");
+
+  if (!tokens || !Array.isArray(tokens)) {
+    return (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Authentication Tokens</h3>
+        <p className="text-gray-500">Loading tokens...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -180,6 +219,7 @@ export const AuthTokenManager = () => {
                       }
                       setVisibleTokens(newVisible);
                     }}
+                    aria-label={visibleTokens.has(token.id) ? "Hide token" : "Show token"}
                   >
                     {visibleTokens.has(token.id) ? (
                       <EyeSlashIcon className="w-4 h-4" />
@@ -191,6 +231,7 @@ export const AuthTokenManager = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => copyToken(token.maskedValue)}
+                    aria-label="Copy token"
                   >
                     <DocumentDuplicateIcon className="w-4 h-4" />
                   </Button>
@@ -198,6 +239,7 @@ export const AuthTokenManager = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleRotate(token.id)}
+                    aria-label="Rotate token"
                   >
                     <ArrowPathIcon className="w-4 h-4" />
                   </Button>
@@ -206,6 +248,7 @@ export const AuthTokenManager = () => {
                     variant="outline"
                     onClick={() => setShowRevokeModal(token.id)}
                     className="text-red-600"
+                    aria-label="Revoke token"
                   >
                     <TrashIcon className="w-4 h-4" />
                   </Button>
@@ -307,4 +350,3 @@ export const AuthTokenManager = () => {
     </div>
   );
 };
-
