@@ -9,6 +9,7 @@ import WorkflowCanvas from "./pages/WorkflowCanvas";
 import WorkflowDetailPage from "./pages/WorkflowDetailPage";
 import Templates from "./pages/Templates";
 import Integrations from "./pages/Integrations";
+import IntegrationDetailPage from "./pages/IntegrationDetailPage";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/workflow/:id" element={<WorkflowDetailPage />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/integrations" element={<Integrations />} />
+            <Route path="/integrations/:id" element={<IntegrationDetailPage />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

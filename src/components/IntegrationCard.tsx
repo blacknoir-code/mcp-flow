@@ -3,10 +3,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 type IntegrationStatus = "connected" | "needs-auth" | "error";
 
 interface IntegrationCardProps {
+  id?: string;
   name: string;
   status: IntegrationStatus;
   lastSync?: string;
@@ -44,17 +46,28 @@ const defaultIcons: Record<string, LucideIcon> = {
 };
 
 export const IntegrationCard = ({ 
+  id,
   name, 
   status, 
   lastSync,
   icon 
 }: IntegrationCardProps) => {
+  const navigate = useNavigate();
   const config = statusConfig[status];
   const StatusIcon = config.icon;
   const AppIcon = icon || defaultIcons[name] || Mail;
 
+  const handleClick = () => {
+    if (id) {
+      navigate(`/integrations/${id}`);
+    }
+  };
+
   return (
-    <Card className="p-5 hover:shadow-lg transition-all duration-300">
+    <Card 
+      className={cn("p-5 hover:shadow-lg transition-all duration-300", id && "cursor-pointer")}
+      onClick={id ? handleClick : undefined}
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className={cn("p-3 rounded-xl", config.bg)}>
@@ -76,10 +89,15 @@ export const IntegrationCard = ({
         </Badge>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
         {status === "connected" && (
           <>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={id ? () => navigate(`/integrations/${id}`) : undefined}
+            >
               Configure
             </Button>
             <Button variant="ghost" size="sm" className="flex-1">
@@ -88,12 +106,21 @@ export const IntegrationCard = ({
           </>
         )}
         {status === "needs-auth" && (
-          <Button size="sm" className="w-full">
+          <Button 
+            size="sm" 
+            className="w-full"
+            onClick={id ? () => navigate(`/integrations/${id}`) : undefined}
+          >
             Authenticate
           </Button>
         )}
         {status === "error" && (
-          <Button variant="destructive" size="sm" className="w-full">
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            className="w-full"
+            onClick={id ? () => navigate(`/integrations/${id}`) : undefined}
+          >
             Reconnect
           </Button>
         )}

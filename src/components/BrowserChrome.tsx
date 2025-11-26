@@ -10,10 +10,13 @@ import {
   Grid3x3,
   Sparkles,
   Home,
-  GitBranch
+  GitBranch,
+  Wand2,
+  Server
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { RegenerateAIButton } from "./RegenerateAIButton";
 
 interface Tab {
   id: string;
@@ -169,6 +172,16 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               title="Workflow Builder"
             >
               <GitBranch className="h-4 w-4" />
+            </Button>
+            <RegenerateAIButton />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handleNavigate("/integrations")}
+              title="Integrations"
+            >
+              <Server className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"

@@ -46,9 +46,9 @@ const Integrations = () => {
   ];
 
   const integrations = [
-    { name: "Gmail", status: "connected" as const, lastSync: "2 min ago" },
-    { name: "Jira", status: "connected" as const, lastSync: "5 min ago" },
-    { name: "Slack", status: "needs-auth" as const },
+    { id: "gmail-1", name: "Gmail", status: "connected" as const, lastSync: "2 min ago" },
+    { id: "jira-1", name: "Jira", status: "connected" as const, lastSync: "5 min ago" },
+    { id: "slack-1", name: "Slack", status: "needs-auth" as const },
   ];
 
   return (
@@ -151,7 +151,8 @@ const Integrations = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {integrations.map((integration) => (
               <IntegrationCard
-                key={integration.name}
+                key={integration.id}
+                id={integration.id}
                 name={integration.name}
                 status={integration.status}
                 lastSync={integration.lastSync}
