@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import ReactFlow, {
   Background,
   Controls,
@@ -11,18 +11,22 @@ import ReactFlow, {
   applyEdgeChanges,
   OnNodesChange,
   OnEdgesChange,
+  useReactFlow,
+  ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { NodeCard } from "./NodeCard";
 import { NodeData } from "@/data/sampleNodes";
 import { useFlowStore } from "@/stores/flowStore";
 import { CardDetailsDrawer } from "@/components/card-details/CardDetailsDrawer";
+import { insertCardAtScreenPosition } from "@/utils/canvasHelpers";
+import { Card } from "@/data/mockCards";
 
 const nodeTypes: NodeTypes = {
   cardNode: NodeCard,
 };
 
-export const Canvas = () => {
+const CanvasInner = () => {
   const {
     nodes,
     edges,
@@ -32,6 +36,7 @@ export const Canvas = () => {
     setSelectedNodeId,
     selectedNodeId,
   } = useFlowStore();
+  const reactFlowInstance = useReactFlow();
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {
@@ -79,8 +84,38 @@ export const Canvas = () => {
     }));
   }, [nodes, selectedNodeId]);
 
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      const cardData = e.dataTransfer.getData("application/json");
+      if (!cardData) return;
+
+      try {
+        const card: Card = JSON.parse(cardData);
+        insertCardAtScreenPosition(
+          card,
+          e.clientX,
+          e.clientY,
+          reactFlowInstance
+        );
+      } catch (error) {
+        console.error("Error parsing card data:", error);
+      }
+    },
+    [reactFlowInstance]
+  );
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+  }, []);
+
   return (
-    <div className="w-full h-full relative">
+    <div
+      className="w-full h-full relative"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
       <ReactFlow
         nodes={nodesWithSelection}
         edges={edges}
@@ -107,5 +142,13 @@ export const Canvas = () => {
         />
       )}
     </div>
+  );
+};
+
+export const Canvas = () => {
+  return (
+    <ReactFlowProvider>
+      <CanvasInner />
+    </ReactFlowProvider>
   );
 };

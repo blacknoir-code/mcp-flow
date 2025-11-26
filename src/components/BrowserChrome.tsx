@@ -14,11 +14,13 @@ import {
   Wand2,
   Server,
   Cpu,
-  History
+  History,
+  SquareStack
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { RegenerateAIButton } from "./RegenerateAIButton";
+import { useAddCardStore } from "@/stores/addCardStore";
 
 interface Tab {
   id: string;
@@ -29,6 +31,7 @@ interface Tab {
 export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const openAddCard = useAddCardStore((state) => state.open);
   
   const [tabs, setTabs] = useState<Tab[]>([
     { id: "1", title: "Dashboard", path: "/" },
@@ -187,6 +190,15 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               <History className="h-4 w-4" />
             </Button>
             <RegenerateAIButton />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={openAddCard}
+              title="Add Card"
+            >
+              <SquareStack className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"

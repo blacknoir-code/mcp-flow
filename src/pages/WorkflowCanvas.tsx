@@ -6,6 +6,7 @@ import { NodeEditorPanel } from "@/components/workflow/NodeEditorPanel";
 import { ExecutionPanel } from "@/components/execution/ExecutionPanel";
 import { TemplatesStrip } from "@/components/workflow/TemplatesStrip";
 import { AIAssistantSidebar } from "@/components/ai-assistant/AIAssistantSidebar";
+import { AddCardPanel } from "@/components/addCard/AddCardPanel";
 import { useFlowStore } from "@/stores/flowStore";
 
 const WorkflowCanvas = () => {
@@ -84,6 +85,8 @@ const WorkflowCanvas = () => {
       </div>
       
       <ExecutionPanel />
+      
+      <AddCardPanel />
 
       {/* Context Menu */}
       {contextMenu && (

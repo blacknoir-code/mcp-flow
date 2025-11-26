@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BrowserChrome } from "./components/BrowserChrome";
+import { AddCardPanel } from "./components/addCard/AddCardPanel";
 import Dashboard from "./pages/Dashboard";
 import WorkflowCanvas from "./pages/WorkflowCanvas";
 import WorkflowDetailPage from "./pages/WorkflowDetailPage";
@@ -40,6 +41,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <AddCardPanel />
         </BrowserChrome>
       </BrowserRouter>
     </TooltipProvider>

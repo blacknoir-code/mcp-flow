@@ -9,8 +9,10 @@ import {
   Undo2,
   Redo2,
   FileText,
+  Plus,
 } from "lucide-react";
 import { useRef } from "react";
+import { useAddCardStore } from "@/stores/addCardStore";
 
 export const Toolbar = () => {
   const {
@@ -25,6 +27,7 @@ export const Toolbar = () => {
   } = useFlowStore();
   const { runWorkflow: executeWorkflow } = useExecutionSimulator();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const openAddCard = useAddCardStore((state) => state.open);
 
   const handleSaveTemplate = () => {
     if (nodes.length === 0) {
@@ -146,6 +149,13 @@ export const Toolbar = () => {
 
   return (
     <div className="h-12 border-b border-gray-200 bg-gray-50 flex items-center px-4 gap-2">
+      <Button onClick={openAddCard} size="sm" variant="default">
+        <Plus className="w-4 h-4 mr-2" />
+        Add Card
+      </Button>
+      
+      <div className="w-px h-6 bg-gray-300 mx-2" />
+      
       <Button onClick={handleRunWorkflow} size="sm" variant="default" disabled={nodes.length === 0}>
         <Play className="w-4 h-4 mr-2" />
         Run Workflow
