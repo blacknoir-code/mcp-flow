@@ -9,7 +9,8 @@ import {
   Settings,
   Grid3x3,
   Sparkles,
-  Home
+  Home,
+  GitBranch
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -156,6 +157,7 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               size="icon"
               className="h-8 w-8"
               onClick={() => handleNavigate("/")}
+              title="Home"
             >
               <Home className="h-4 w-4" />
             </Button>
@@ -163,7 +165,17 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
+              onClick={() => handleNavigate("/workflow")}
+              title="Workflow Builder"
+            >
+              <GitBranch className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
               onClick={() => handleNavigate("/templates")}
+              title="Templates"
             >
               <Grid3x3 className="h-4 w-4" />
             </Button>
@@ -172,6 +184,7 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               size="icon"
               className="h-8 w-8"
               onClick={() => handleNavigate("/settings")}
+              title="Settings"
             >
               <Settings className="h-4 w-4" />
             </Button>
@@ -180,7 +193,7 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Page Content */}
-      <div className="flex-1 overflow-auto bg-canvas">
+      <div className="flex-1 bg-canvas" style={{ minHeight: 0, overflow: currentPath === '/workflow' ? 'hidden' : 'auto' }}>
         {children}
       </div>
     </div>

@@ -3,9 +3,19 @@ import { TemplateCard } from "@/components/TemplateCard";
 import { WorkflowCard } from "@/components/WorkflowCard";
 import { IntegrationCard } from "@/components/IntegrationCard";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Play } from "lucide-react";
+import { Sparkles, Play, GitBranch } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useWorkflowStore } from "@/stores/workflowStore";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const { workflows, createWorkflow } = useWorkflowStore();
+
+  const handleCreateWorkflow = () => {
+    const id = createWorkflow("New Workflow", "");
+    navigate(`/workflow/${id}`);
+  };
+
   return (
     <div className="min-h-full">
       {/* Main Content */}
@@ -22,6 +32,14 @@ const Dashboard = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Connect your tools, describe what you want, and watch the AI build your workflow
           </p>
+          <Button 
+            onClick={() => navigate("/workflow")}
+            size="lg"
+            className="bg-gradient-to-r from-primary to-electric-glow"
+          >
+            <GitBranch className="h-5 w-5 mr-2" />
+            Open Workflow Builder
+          </Button>
         </div>
 
         {/* Command Bar */}

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BrowserChrome } from "./components/BrowserChrome";
 import Dashboard from "./pages/Dashboard";
 import WorkflowCanvas from "./pages/WorkflowCanvas";
+import WorkflowDetailPage from "./pages/WorkflowDetailPage";
 import Templates from "./pages/Templates";
 import Integrations from "./pages/Integrations";
 import Settings from "./pages/Settings";
@@ -26,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/workflow" element={<WorkflowCanvas />} />
+            <Route path="/workflow/:id" element={<WorkflowDetailPage />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/integrations" element={<Integrations />} />
             <Route path="/settings" element={<Settings />} />
