@@ -4,7 +4,11 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/mcp-flow/",
+  // Base path configuration
+  // For Vercel: use "/" (default)
+  // For GitHub Pages or subdirectory: use "/repo-name/"
+  // Can be overridden with VITE_BASE_PATH environment variable
+  base: process.env.VITE_BASE_PATH || "/",
   server: {
     host: "::",
     port: 8080,
