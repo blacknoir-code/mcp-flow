@@ -10,7 +10,8 @@ import WorkflowDetailPage from "./pages/WorkflowDetailPage";
 import Templates from "./pages/Templates";
 import Integrations from "./pages/Integrations";
 import IntegrationDetailPage from "./pages/IntegrationDetailPage";
-import Settings from "./pages/Settings";
+import { MCPServerManagerPage } from "./pages/MCPServerManagerPage";
+import { SettingsPage } from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,7 +33,8 @@ const App = () => (
             <Route path="/templates" element={<Templates />} />
             <Route path="/integrations" element={<Integrations />} />
             <Route path="/integrations/:id" element={<IntegrationDetailPage />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/mcp-servers" element={<MCPServerManagerPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

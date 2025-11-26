@@ -12,7 +12,8 @@ import {
   Home,
   GitBranch,
   Wand2,
-  Server
+  Server,
+  Cpu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,6 +42,7 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
       case "/workflow": return "Workflow Builder";
       case "/templates": return "Templates";
       case "/integrations": return "Integrations";
+      case "/mcp-servers": return "MCP Server Manager";
       case "/settings": return "Settings";
       default: return "MCP Browser";
     }
@@ -182,6 +184,15 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               title="Integrations"
             >
               <Server className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handleNavigate("/mcp-servers")}
+              title="MCP Server Manager"
+            >
+              <Cpu className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
