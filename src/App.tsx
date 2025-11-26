@@ -12,6 +12,7 @@ import Integrations from "./pages/Integrations";
 import IntegrationDetailPage from "./pages/IntegrationDetailPage";
 import { MCPServerManagerPage } from "./pages/MCPServerManagerPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { WorkflowRunsPage } from "./pages/WorkflowRunsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/workflow" element={<WorkflowCanvas />} />
             <Route path="/workflow/:id" element={<WorkflowDetailPage />} />
+            <Route path="/runs" element={<WorkflowRunsPage />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/integrations" element={<Integrations />} />
             <Route path="/integrations/:id" element={<IntegrationDetailPage />} />

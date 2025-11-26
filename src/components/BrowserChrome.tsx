@@ -13,7 +13,8 @@ import {
   GitBranch,
   Wand2,
   Server,
-  Cpu
+  Cpu,
+  History
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,6 +41,7 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
     switch (path) {
       case "/": return "Dashboard";
       case "/workflow": return "Workflow Builder";
+      case "/runs": return "Workflow Runs";
       case "/templates": return "Templates";
       case "/integrations": return "Integrations";
       case "/mcp-servers": return "MCP Server Manager";
@@ -174,6 +176,15 @@ export const BrowserChrome = ({ children }: { children: React.ReactNode }) => {
               title="Workflow Builder"
             >
               <GitBranch className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handleNavigate("/runs")}
+              title="Workflow Runs"
+            >
+              <History className="h-4 w-4" />
             </Button>
             <RegenerateAIButton />
             <Button
